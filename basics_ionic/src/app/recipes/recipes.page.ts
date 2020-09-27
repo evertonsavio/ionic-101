@@ -13,6 +13,20 @@ export class RecipesPage implements OnInit {
   constructor(private recipeService: RecipesService) {}
 
   ngOnInit() {
+    console.log('ngOnInit');
+  }
+  ionViewWillEnter() {
     this.recipes = this.recipeService.getAllRecipes();
+    console.log(this.recipes);
+    console.log('ionViewWillEnter');
+  }
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter');
+  }
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave');
+  }
+  ionViewDidLeave() {
+    console.log('ionViewDidLeave');
   }
 }
