@@ -3,8 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button text="" defaultHref="/places/discover"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detalhes: {{LoadedPlace.title}}</ion-title>
+    <ion-title>Detalhes: {{loadedPlace.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-button (click)="onBookPlace()" fill="clear"> Book </ion-button>
+</ion-content>
