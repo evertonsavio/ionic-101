@@ -24,10 +24,9 @@ export class OfferBookingsPage implements OnInit {
         this.navCtrl.navigateBack("/places/offers");
         return;
       }
-      //this.place = this.placesService.places.find(
+      //this.loadedPlace = this.placesService.places.find(
       //  (res) => res.id === paramMap.get("placeId")
-      //);
-      console.log(this.loadedPlace);
+      //); CODIGO IMPLEMENTADO NO SERVICE
       this.loadedPlace = this.placesService.getPlace(paramMap.get("placeId"));
       console.log(this.loadedPlace);
     });
