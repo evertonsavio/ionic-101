@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>My offers</ion-title>
-    <ion-button slot="primary" [routerLink]="['/places/offers/new']">
+    <ion-button slot="primary" routerLink="/places/offers/new">
       <ion-icon slot="icon-only" name="add"></ion-icon>
     </ion-button>
   </ion-toolbar>
@@ -13,7 +13,7 @@
       <ion-col size="12" size-sm="8" offset-sm="2"></ion-col>
       <ion-item
         *ngFor="let offer of offers"
-        [routerLink]="['/', 'places', 'offers','offer.id']"
+        [routerLink]="['/', 'places', 'offers', offer.id]"
       >
         <ion-thumbnail slot="start">
           <img [src]="offer.imageUrl" />

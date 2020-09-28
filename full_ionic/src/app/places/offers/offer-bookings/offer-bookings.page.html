@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/places/offers"></ion-back-button>
     </ion-buttons>
-    <ion-title>offer-bookings</ion-title>
+    <ion-title>{{loadedPlace?.title}}</ion-title>
+    <ion-button
+      slot="primary"
+      color="warning"
+      [routerLink]="['/', 'places', 'offers', 'edit',loadedPlace.id]"
+    >
+      Edit
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 

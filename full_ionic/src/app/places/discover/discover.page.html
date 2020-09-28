@@ -23,7 +23,7 @@
             <ion-button
               fill="clear"
               routerDirection="forward"
-              [routerLink]="['/', 'places', 'discover', 'loadedPlaces[0].id']"
+              [routerLink]="['/', 'places', 'discover', loadedPlaces[0].id]"
             >
               Mais
             </ion-button>
@@ -34,7 +34,7 @@
         <ion-list>
           <ion-item
             *ngFor="let place of loadedPlaces.slice(1)"
-            [routerLink]="['/', 'places', 'discover', 'place.id']"
+            [routerLink]="['/', 'places', 'discover', place.id]"
             detail
           >
             <ion-thumbnail slot="start">
