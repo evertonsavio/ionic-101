@@ -1,17 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {Place} from '../offers/place.model';
-import {PlacesService} from '../places.service';
+import { Component, OnInit } from "@angular/core";
+import { MenuController } from "@ionic/angular";
+import { Place } from "../offers/place.model";
+import { PlacesService } from "../places.service";
 
 @Component({
-  selector: 'app-discover',
-  templateUrl: './discover.page.html',
-  styleUrls: ['./discover.page.scss'],
+  selector: "app-discover",
+  templateUrl: "./discover.page.html",
+  styleUrls: ["./discover.page.scss"],
 })
 export class DiscoverPage implements OnInit {
   loadedPlaces: Place[];
-  constructor(private placesService: PlacesService) {}
+  constructor(
+    private placesService: PlacesService,
+    private menuCtrl: MenuController
+  ) {}
 
   ngOnInit() {
     this.loadedPlaces = this.placesService.places;
+  }
+  onClick() {
+    this.menuCtrl.toggle();
   }
 }
