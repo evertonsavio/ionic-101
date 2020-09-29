@@ -12,6 +12,8 @@ export class DiscoverPage implements OnInit {
   loadedPlaces: Place[];
   listedLoadedPlaces: Place[];
 
+  public isOpened: boolean = false;
+
   constructor(
     private placesService: PlacesService,
     private menuCtrl: MenuController
@@ -23,5 +25,8 @@ export class DiscoverPage implements OnInit {
   }
   onClick() {
     this.menuCtrl.toggle();
+  }
+  segmentChanged() {
+    this.isOpened = !this.isOpened;
   }
 }
