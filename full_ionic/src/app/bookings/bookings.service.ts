@@ -7,8 +7,15 @@ export class BookingsService {
     {
       id: "xsa",
       placeId: "p1",
-      placeTitle: "asd",
+      placeTitle: "Booking 1",
       guestNumber: 1,
+      userId: "1u",
+    },
+    {
+      id: "xs2",
+      placeId: "p2",
+      placeTitle: "Booking 2",
+      guestNumber: 2,
       userId: "1u",
     },
   ];

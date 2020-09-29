@@ -20,6 +20,27 @@ export class PlacesService {
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
       132
     ),
+    new Place(
+      "3",
+      "Maasdasdtan",
+      "asasad",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
+      132
+    ),
+    new Place(
+      "4",
+      "Maasdasdtan",
+      "asasad",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
+      132
+    ),
+    new Place(
+      "5",
+      "Maasdasdtan",
+      "asasad",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
+      132
+    ),
   ];
 
   get places() {
