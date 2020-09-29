@@ -26,7 +26,8 @@ export class DiscoverPage implements OnInit {
   onClick() {
     this.menuCtrl.toggle();
   }
-  segmentChanged() {
+  segmentChanged(event: CustomEvent) {
     this.isOpened = !this.isOpened;
+    console.log(event.detail);
   }
 }
