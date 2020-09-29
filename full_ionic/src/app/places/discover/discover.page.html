@@ -38,9 +38,12 @@
         </ion-card>
       </ion-col>
       <ion-col size="12" size-sm="8" offset-sm="2" text-center>
-        <ion-list>
+        <ion-virtual-scroll
+          [items]="listedLoadedPlaces"
+          approxItemHeight="70px"
+        >
           <ion-item
-            *ngFor="let place of loadedPlaces.slice(1)"
+            *virtualItem="let place"
             [routerLink]="['/', 'places', 'discover', place.id]"
             detail
           >
@@ -52,7 +55,7 @@
               <p>{{place.description}}</p>
             </ion-label>
           </ion-item>
-        </ion-list>
+        </ion-virtual-scroll>
       </ion-col>
     </ion-row>
   </ion-grid>
