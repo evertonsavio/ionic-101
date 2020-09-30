@@ -16,11 +16,19 @@
     [color]="isOpened ? 'primary' : 'danger'"
   >
     <ion-segment-button value="all">
-      <ion-icon name="lock-closed-outline" *ngIf="isOpened"></ion-icon>
+      <ion-icon
+        size="large"
+        name="lock-closed-outline"
+        *ngIf="isOpened"
+      ></ion-icon>
       <ion-label *ngIf="!isOpened"> ABERTO</ion-label>
     </ion-segment-button>
     <ion-segment-button value="bookable">
-      <ion-icon name="lock-open-outline" *ngIf="!isOpened"></ion-icon>
+      <ion-icon
+        size="large"
+        name="lock-open-outline"
+        *ngIf="!isOpened"
+      ></ion-icon>
       <ion-label *ngIf="isOpened"> Fechado</ion-label>
     </ion-segment-button>
   </ion-segment>
