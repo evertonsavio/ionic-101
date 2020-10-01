@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import {
   ActionSheetController,
@@ -6,8 +6,9 @@ import {
   NavController,
   ToastController,
 } from "@ionic/angular";
+import { Subscription } from "rxjs";
 import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
-import { Place } from "../../offers/place.model";
+import { Place } from "../../place.model";
 import { PlacesService } from "../../places.service";
 
 @Component({
@@ -15,7 +16,7 @@ import { PlacesService } from "../../places.service";
   templateUrl: "./place-detail.page.html",
   styleUrls: ["./place-detail.page.scss"],
 })
-export class PlaceDetailPage implements OnInit {
+export class PlaceDetailPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -26,6 +27,7 @@ export class PlaceDetailPage implements OnInit {
   ) {}
 
   loadedPlace: Place;
+  private placeSub: Subscription;
 
   presentToast() {
     this.toastCtrl
@@ -40,15 +42,24 @@ export class PlaceDetailPage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((param) => {
+    this.placeSub = this.route.paramMap.subscribe((param) => {
       if (!param.has("placeId")) {
         this.navCtrl.navigateBack("/places/discover");
         return;
       }
       this.presentToast();
-      this.loadedPlace = this.placesService.getPlace(param.get("placeId"));
+      this.placesService.getPlace(param.get("placeId")).subscribe((place) => {
+        this.loadedPlace = place;
+      });
     });
   }
+
+  ngOnDestroy(): void {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
+  }
+
   openBookingModal(mode: "select" | "random") {
     console.log(mode);
     this.modalCtrl

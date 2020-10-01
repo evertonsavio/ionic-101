@@ -1,11 +1,16 @@
 import { Injectable } from "@angular/core";
-import { Place } from "./offers/place.model";
+import { BehaviorSubject } from "rxjs";
+import { AuthService } from "../auth/auth.service";
+import { Place } from "./place.model";
+import { take, map, filter } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
 })
 export class PlacesService {
-  private _places: Place[] = [
+  constructor(private authService: AuthService) {}
+
+  private _places = new BehaviorSubject<Place[]>([
     new Place(
       "1",
       "Manhatan",
@@ -13,7 +18,8 @@ export class PlacesService {
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&w=1000&q=80",
       132,
       new Date("2019-12-12"),
-      new Date("2020-12-12")
+      new Date("2020-12-12"),
+      `1`
     ),
     new Place(
       "2",
@@ -22,44 +28,44 @@ export class PlacesService {
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
       132,
       new Date("2019-12-12"),
-      new Date("2020-12-12")
+      new Date("2020-12-12"),
+      `2`
     ),
-    new Place(
-      "3",
-      "Maasdasdtan",
-      "asasad",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
-      132,
-      new Date("2019-12-12"),
-      new Date("2020-12-12")
-    ),
-    new Place(
-      "4",
-      "Maasdasdtan",
-      "asasad",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
-      132,
-      new Date("2019-12-12"),
-      new Date("2020-12-12")
-    ),
-    new Place(
-      "5",
-      "Maasdasdtan",
-      "asasad",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
-      132,
-      new Date("2019-12-12"),
-      new Date("2020-12-12")
-    ),
-  ];
+  ]);
 
   get places() {
-    return [...this._places];
+    return this._places.asObservable();
   }
 
   getPlace(_id: string) {
-    return { ...this._places.find((res) => res.id === _id) };
+    return this.places.pipe(
+      take(1),
+      map((places) => {
+        return { ...places.find((p) => p.id === _id) };
+      })
+    );
   }
 
-  constructor() {}
+  addPlace(
+    title: string,
+    description: string,
+    price: number,
+    dateFrom: Date,
+    dateTo: Date
+  ) {
+    const newPlace = new Place(
+      Math.random().toString(),
+      title,
+      description,
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
+      price,
+      dateFrom,
+      dateTo,
+      this.authService.userId
+    );
+    //this._places.push(newPlace);
+    this._places.pipe(take(1)).subscribe((places) => {
+      this._places.next(places.concat(newPlace));
+    });
+  }
 }
