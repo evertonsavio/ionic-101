@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import {
   ActionSheetController,
+  LoadingController,
   ModalController,
   NavController,
   ToastController,
 } from "@ionic/angular";
 import { Subscription } from "rxjs";
+import { BookingsService } from "src/app/bookings/bookings.service";
 import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
 import { Place } from "../../place.model";
 import { PlacesService } from "../../places.service";
@@ -23,7 +25,9 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private placesService: PlacesService,
     private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private bookingService: BookingsService,
+    private loadCtrl: LoadingController
   ) {}
 
   loadedPlace: Place;
@@ -74,7 +78,29 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
       .then((resultData) => {
         console.log(resultData.data, resultData.role);
         if (resultData.role === "confirm") {
-          console.log("Boooooked!!!");
+          this.loadCtrl
+            .create({
+              message: "booking place",
+            })
+            .then((loadingEl) => {
+              loadingEl.present();
+              console.log("Boooooked!!!");
+              const data = resultData.data.BookingData;
+              this.bookingService
+                .addBooking(
+                  this.loadedPlace.id,
+                  this.loadedPlace.title,
+                  this.loadedPlace.imageUrl,
+                  data.firstName,
+                  data.lastName,
+                  data.guestNumber,
+                  data.startDate,
+                  data.endDate
+                )
+                .subscribe(() => {
+                  loadingEl.dismiss();
+                });
+            });
         }
       });
   }
