@@ -14,7 +14,13 @@
       <p>{{loadedPlace.description}}</p>
     </ion-text>
   </ion-item>
-  <ion-button (click)="onBookPlace()" fill="outline" expand="block">
+
+  <ion-button
+    *ngIf="isBook"
+    (click)="onBookPlace()"
+    fill="outline"
+    expand="block"
+  >
     Book
   </ion-button>
 </ion-content>

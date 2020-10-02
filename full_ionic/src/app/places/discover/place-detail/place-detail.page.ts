@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   ActionSheetController,
   LoadingController,
@@ -8,6 +8,7 @@ import {
   ToastController,
 } from "@ionic/angular";
 import { Subscription } from "rxjs";
+import { AuthService } from "src/app/auth/auth.service";
 import { BookingsService } from "src/app/bookings/bookings.service";
 import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
 import { Place } from "../../place.model";
@@ -27,11 +28,18 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private bookingService: BookingsService,
-    private loadCtrl: LoadingController
+    private loadCtrl: LoadingController,
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   loadedPlace: Place;
   private placeSub: Subscription;
+  private isBookable: boolean = false;
+
+  get isBook() {
+    return this.isBookable;
+  }
 
   presentToast() {
     this.toastCtrl
@@ -54,6 +62,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
       this.presentToast();
       this.placesService.getPlace(param.get("placeId")).subscribe((place) => {
         this.loadedPlace = place;
+        this.isBookable = place.userId !== this.authService.userId;
       });
     });
   }
@@ -99,6 +108,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
                 )
                 .subscribe(() => {
                   loadingEl.dismiss();
+                  this.router.navigate(["/bookings"]);
                 });
             });
         }

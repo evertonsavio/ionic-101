@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import { Place } from "src/app/places/place.model";
 
