@@ -13,7 +13,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   loadedPlaces: Place[];
   listedLoadedPlaces: Place[];
   private placesSub: Subscription; //PARA FINS DE MEMORY LEAK
-
+  isLoading = false;
   public isOpened: boolean = false;
 
   constructor(
@@ -27,6 +27,14 @@ export class DiscoverPage implements OnInit, OnDestroy {
       this.listedLoadedPlaces = this.loadedPlaces.slice(1);
     });
   }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
+  }
+
   //PARA FINS DE MEMORY LEAK
   ngOnDestroy(): void {
     if (this.placesSub) {

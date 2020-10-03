@@ -21,28 +21,7 @@ interface PlaceData {
 export class PlacesService {
   constructor(private authService: AuthService, private http: HttpClient) {}
 
-  private _places = new BehaviorSubject<Place[]>([
-    new Place(
-      "1",
-      "Manhatan",
-      "asdsad",
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&w=1000&q=80",
-      132,
-      new Date("2019-12-12"),
-      new Date("2020-12-12"),
-      `1`
-    ),
-    new Place(
-      "2",
-      "Maasdasdtan",
-      "asasad",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROZed5WF_deArLvwsn5oqECGfkEfuOrPyMYg&usqp=CAU",
-      132,
-      new Date("2019-12-12"),
-      new Date("2020-12-12"),
-      `2`
-    ),
-  ]);
+  private _places = new BehaviorSubject<Place[]>([]);
 
   get places() {
     return this._places.asObservable();
