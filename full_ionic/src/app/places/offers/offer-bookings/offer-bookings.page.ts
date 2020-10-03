@@ -11,8 +11,9 @@ import { Subscription } from "rxjs";
   styleUrls: ["./offer-bookings.page.scss"],
 })
 export class OfferBookingsPage implements OnInit, OnDestroy {
-  loadedPlace: Place;
-  private subPlace: Subscription;
+  place: Place;
+  private placeSub: Subscription;
+  isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,23 +24,22 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
       if (!paramMap.has("placeId")) {
-        this.navCtrl.navigateBack("/places/offers");
+        this.navCtrl.navigateBack("/places/tabs/offers");
         return;
       }
-      //this.loadedPlace = this.placesService.places.find(
-      //  (res) => res.id === paramMap.get("placeId")
-      //); CODIGO IMPLEMENTADO NO SERVICE
-      this.subPlace = this.placesService
+      this.isLoading = true;
+      this.placeSub = this.placesService
         .getPlace(paramMap.get("placeId"))
         .subscribe((place) => {
-          this.loadedPlace = place;
+          this.place = place;
+          this.isLoading = false;
         });
-      console.log(this.loadedPlace);
     });
   }
-  ngOnDestroy(): void {
-    if (this.subPlace) {
-      this.subPlace.unsubscribe();
+
+  ngOnDestroy() {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
     }
   }
 }

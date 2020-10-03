@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-segment
+  <!-- <ion-segment
     value="all"
     (ionChange)="segmentChanged($event)"
     [color]="isOpened ? 'primary' : 'danger'"
@@ -31,7 +31,7 @@
       ></ion-icon>
       <ion-label *ngIf="isOpened"> Fechado</ion-label>
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment> -->
 
   <div class="ion-text-center">
     <ion-spinner *ngIf="isLoading" name="bubbles"></ion-spinner>
@@ -78,7 +78,7 @@
               <img [src]="place.imageUrl" />
             </ion-thumbnail>
             <ion-label>
-              <h2>{{place.title}}}</h2>
+              <h2>{{place.title}}</h2>
               <p>{{place.description}}</p>
             </ion-label>
           </ion-item>

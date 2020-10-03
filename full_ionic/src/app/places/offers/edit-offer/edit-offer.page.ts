@@ -12,62 +12,60 @@ import { Subscription } from "rxjs";
   styleUrls: ["./edit-offer.page.scss"],
 })
 export class EditOfferPage implements OnInit, OnDestroy {
-  constructor(
-    private route: ActivatedRoute,
-    private navCtrl: NavController,
-    private placesService: PlacesService,
-    private router: Router,
-    private loadCtrl: LoadingController
-  ) {}
-
-  loadedPlace: Place;
+  place: Place;
+  placeId: string;
   form: FormGroup;
-
+  isLoading: boolean = false;
   private placeSub: Subscription;
 
+  constructor(
+    private route: ActivatedRoute,
+    private placesService: PlacesService,
+    private navCtrl: NavController,
+    private router: Router,
+    private loadingCtrl: LoadingController
+  ) {}
+
   ngOnInit() {
-    this.route.paramMap.subscribe((param) => {
-      if (!param.has("placeId")) {
+    this.route.paramMap.subscribe((paramMap) => {
+      if (!paramMap.has("placeId")) {
         this.navCtrl.navigateBack("/places/offers");
         return;
       }
+      this.placeId = paramMap.get("placeId");
+      this.isLoading = true;
       this.placeSub = this.placesService
-        .getPlace(param.get("placeId"))
+        .getPlace(paramMap.get("placeId"))
         .subscribe((place) => {
-          this.loadedPlace = place;
+          this.place = place;
+          this.form = new FormGroup({
+            title: new FormControl(this.place.title, {
+              updateOn: "blur",
+              validators: [Validators.required],
+            }),
+            description: new FormControl(this.place.description, {
+              updateOn: "blur",
+              validators: [Validators.required, Validators.maxLength(180)],
+            }),
+          });
+          this.isLoading = false;
         });
-
-      this.form = new FormGroup({
-        title: new FormControl(this.loadedPlace.title, {
-          updateOn: "blur",
-          validators: [Validators.required],
-        }),
-        description: new FormControl(this.loadedPlace.description, {
-          updateOn: "blur",
-          validators: [Validators.required, Validators.maxLength(180)],
-        }),
-      });
     });
   }
-  ngOnDestroy(): void {
-    if (this.placeSub) {
-      this.placeSub.unsubscribe();
-    }
-  }
-  onEditOffer() {
+
+  onUpdateOffer() {
     if (!this.form.valid) {
       return;
     }
-    console.log(this.form.value);
-    this.loadCtrl
+    this.loadingCtrl
       .create({
-        message: "updating place",
+        message: "Updating place...",
       })
       .then((loadingEl) => {
         loadingEl.present();
         this.placesService
           .updatePlace(
-            this.loadedPlace.id,
+            this.place.id,
             this.form.value.title,
             this.form.value.description
           )
@@ -77,5 +75,11 @@ export class EditOfferPage implements OnInit, OnDestroy {
             this.router.navigate(["/places/offers"]);
           });
       });
+  }
+
+  ngOnDestroy() {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, of } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { Place } from "./place.model";
 import { take, map, filter, tap, delay, switchMap } from "rxjs/operators";
@@ -28,12 +28,24 @@ export class PlacesService {
   }
 
   getPlace(_id: string) {
-    return this.places.pipe(
-      take(1),
-      map((places) => {
-        return { ...places.find((p) => p.id === _id) };
-      })
-    );
+    return this.http
+      .get<PlaceData>(
+        `https://ionic-angular-d3bdc.firebaseio.com/offered-places/${_id}.json`
+      )
+      .pipe(
+        map((placeData) => {
+          return new Place(
+            _id,
+            placeData.title,
+            placeData.description,
+            placeData.imageUrl,
+            placeData.price,
+            new Date(placeData.availableFrom),
+            new Date(placeData.availableTo),
+            placeData.userId
+          );
+        })
+      );
   }
 
   fetchPlaces() {
@@ -111,6 +123,13 @@ export class PlacesService {
     let updatedPlaces: Place[];
     return this.places.pipe(
       take(1),
+      switchMap((places) => {
+        if (!places || places.length <= 0) {
+          return this.fetchPlaces();
+        } else {
+          return of(places);
+        }
+      }),
       switchMap((places) => {
         const updatedPlaceIndex = places.findIndex((pl) => pl.id === placeId);
         updatedPlaces = [...places];

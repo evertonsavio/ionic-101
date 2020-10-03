@@ -3,15 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/offers"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{loadedPlace?.title}}</ion-title>
-    <ion-button
-      slot="primary"
-      color="warning"
-      [routerLink]="['/', 'places', 'offers', 'edit',loadedPlace.id]"
-    >
-      Edit
-    </ion-button>
+    <ion-title *ngIf="!isLoading">{{ place.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+
+<ion-content *ngIf="!isLoading" class="ion-padding">
+  <ion-button
+    margin
+    color="primary"
+    [routerLink]="['/', 'places', 'offers', 'edit', place.id]"
+    >Edit</ion-button
+  >
+</ion-content>
