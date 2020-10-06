@@ -54,11 +54,6 @@ export class AuthPage implements OnInit {
       // Send a request to login servers
     } else {
       // Send a request to signup servers
-      console.log(this.isLogin);
-      this.authService.signUp(email, password).subscribe((resData) => {
-        console.log(resData);
-        this.isLogin = true;
-      });
     }
   }
 }
