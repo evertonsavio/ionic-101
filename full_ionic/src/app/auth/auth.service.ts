@@ -7,8 +7,13 @@ import { HttpClient } from "@angular/common/http";
 export class AuthService {
   constructor(private http: HttpClient) {}
 
+<<<<<<< HEAD
   private _userIsAuthenticated = false;
   private _userId = null;
+=======
+  private _userIsAuthenticated = true;
+  private _userId = "abcd";
+>>>>>>> a8c75197e688eaeda85b6b86650253f45d1af2f9
 
   get userIsAuth() {
     return this._userIsAuthenticated;

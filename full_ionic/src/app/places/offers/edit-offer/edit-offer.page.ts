@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { LoadingController, NavController } from "@ionic/angular";
+import {
+  LoadingController,
+  NavController,
+  AlertController,
+} from "@ionic/angular";
 import { PlacesService } from "../../places.service";
 import { Place } from "../../place.model";
 import { Subscription } from "rxjs";
+import { error } from "@angular/compiler/src/util";
 
 @Component({
   selector: "app-edit-offer",
@@ -14,60 +19,79 @@ import { Subscription } from "rxjs";
 export class EditOfferPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
-    private navCtrl: NavController,
     private placesService: PlacesService,
+    private navCtrl: NavController,
     private router: Router,
-    private loadCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) {}
 
-  loadedPlace: Place;
+  place: Place;
+  placeId: string;
   form: FormGroup;
-
+  isLoading: boolean = false;
   private placeSub: Subscription;
 
   ngOnInit() {
-    this.route.paramMap.subscribe((param) => {
-      if (!param.has("placeId")) {
+    this.route.paramMap.subscribe((paramMap) => {
+      if (!paramMap.has("placeId")) {
         this.navCtrl.navigateBack("/places/offers");
         return;
       }
+      this.placeId = paramMap.get("placeId");
+      this.isLoading = true;
       this.placeSub = this.placesService
-        .getPlace(param.get("placeId"))
-        .subscribe((place) => {
-          this.loadedPlace = place;
-        });
-
-      this.form = new FormGroup({
-        title: new FormControl(this.loadedPlace.title, {
-          updateOn: "blur",
-          validators: [Validators.required],
-        }),
-        description: new FormControl(this.loadedPlace.description, {
-          updateOn: "blur",
-          validators: [Validators.required, Validators.maxLength(180)],
-        }),
-      });
+        .getPlace(paramMap.get("placeId"))
+        .subscribe(
+          (place) => {
+            this.place = place;
+            this.form = new FormGroup({
+              title: new FormControl(this.place.title, {
+                updateOn: "blur",
+                validators: [Validators.required],
+              }),
+              description: new FormControl(this.place.description, {
+                updateOn: "blur",
+                validators: [Validators.required, Validators.maxLength(180)],
+              }),
+            });
+            this.isLoading = false;
+          },
+          (error) => {
+            this.alertCtrl
+              .create({
+                header: "Um erro occorreu",
+                message: "OOOPS",
+                buttons: [
+                  {
+                    text: "Okay",
+                    handler: () => {
+                      this.router.navigate(["/places/offers"]);
+                    },
+                  },
+                ],
+              })
+              .then((alertEl) => {
+                alertEl.present();
+              });
+          }
+        );
     });
   }
-  ngOnDestroy(): void {
-    if (this.placeSub) {
-      this.placeSub.unsubscribe();
-    }
-  }
-  onEditOffer() {
+
+  onUpdateOffer() {
     if (!this.form.valid) {
       return;
     }
-    console.log(this.form.value);
-    this.loadCtrl
+    this.loadingCtrl
       .create({
-        message: "updating place",
+        message: "Updating place...",
       })
       .then((loadingEl) => {
         loadingEl.present();
         this.placesService
           .updatePlace(
-            this.loadedPlace.id,
+            this.place.id,
             this.form.value.title,
             this.form.value.description
           )
@@ -77,5 +101,11 @@ export class EditOfferPage implements OnInit, OnDestroy {
             this.router.navigate(["/places/offers"]);
           });
       });
+  }
+
+  ngOnDestroy() {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
   }
 }

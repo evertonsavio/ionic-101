@@ -3,11 +3,13 @@
     <ion-buttons slot="start">
       <ion-back-button text="" defaultHref="/places/discover"></ion-back-button>
     </ion-buttons>
-    <ion-title>Detalhes: {{loadedPlace.title}}</ion-title>
+    <ion-title *ngIf="loadedPlace !== undefined"
+      >Detalhes: {{loadedPlace.title}}</ion-title
+    >
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding">
+<ion-content class="ion-no-padding" *ngIf="loadedPlace !== undefined">
   <ion-img [src]="loadedPlace.imageUrl"></ion-img>
   <ion-item>
     <ion-text color="primary">
