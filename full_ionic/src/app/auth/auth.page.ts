@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
-import { LoadingController } from "@ionic/angular";
+import { AlertController, LoadingController } from "@ionic/angular";
 
 import { AuthService } from "./auth.service";
 
@@ -17,23 +17,50 @@ export class AuthPage implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {}
 
-  authenticate() {
+  authenticate(email: string, password: string) {
     this.isLoading = true;
     this.authService.login();
     this.loadingCtrl
       .create({ keyboardClose: true, message: "Logging in..." })
       .then((loadingEl) => {
         loadingEl.present();
-        setTimeout(() => {
-          this.isLoading = false;
-          loadingEl.dismiss();
-          this.router.navigateByUrl("/places/discover");
-        }, 1500);
+
+        if (this.isLogin) {
+          // Send a request to login servers
+          this.authService.signIn(email, password).subscribe(
+            (resData) => {
+              this.isLoading = false;
+              loadingEl.dismiss();
+              console.log(resData);
+            },
+            (errResponse) => {
+              loadingEl.dismiss();
+              console.log(errResponse);
+              this.showAlert("Invalido, por favor tente de novo!");
+            }
+          );
+        } else {
+          this.authService.signUp(email, password).subscribe(
+            (resData) => {
+              this.isLoading = false;
+              loadingEl.dismiss();
+              console.log(resData);
+              //this.isLogin = true;
+            },
+            (errResponse) => {
+              loadingEl.dismiss();
+              console.log(errResponse);
+              this.showAlert("Invalido, por favor tente de novo!");
+            }
+          );
+        }
+        //this.router.navigateByUrl("/places/discover");
       });
   }
 
@@ -50,7 +77,9 @@ export class AuthPage implements OnInit {
     const password = form.value.password;
     console.log(email, password);
 
-    if (this.isLogin) {
+    this.authenticate(email, password);
+
+    /*     if (this.isLogin) {
       // Send a request to login servers
       this.authService.signIn(email, password).subscribe((resData) => {
         console.log(resData);
@@ -60,6 +89,17 @@ export class AuthPage implements OnInit {
         console.log(resData);
         //this.isLogin = true;
       });
-    }
+    } */
+  }
+  private showAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: "A requisição falhou!",
+        message: message,
+        buttons: ["ok"],
+      })
+      .then((alertEl) => {
+        alertEl.present();
+      });
   }
 }
