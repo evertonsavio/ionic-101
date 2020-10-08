@@ -10,12 +10,25 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 
+import { JwtModule } from "@auth0/angular-jwt";
+import { environment } from "../environments/environment";
+
+export function tokenGetter(): string | null {
+  return localStorage.getItem("jwt_token");
+}
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     HttpClientModule,
+    //JwtModule.forRoot({
+    //  config: {
+    //    tokenGetter,
+    //    allowedDomains: environment.allowedDomains,
+    //  },
+    //}),
     IonicModule.forRoot(),
     AppRoutingModule,
   ],

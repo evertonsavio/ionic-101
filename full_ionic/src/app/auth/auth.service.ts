@@ -1,5 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { map, tap } from "rxjs/operators";
 
 interface SignUpData {
   email: string;
@@ -24,13 +25,45 @@ export class AuthService {
   }
 
   signUp(email: string, password: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+      }),
+    };
     return this.http.post<SignUpData>(
-      `http://172.16.106.14:8101/users/signup`,
+      `http://172.16.106.14:8001/users/signup`,
       {
         email: email,
         password: password,
       }
+      //httpOptions
     );
+  }
+
+  signIn(email: string, password: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+      }),
+    };
+    return this.http
+      .post(
+        `http://172.16.106.14:8001/users/signin`,
+        {
+          email: email,
+          password: password,
+        },
+        //httpOptions
+        {
+          observe: "response",
+          responseType: "text",
+        }
+      )
+      .pipe(
+        tap((res) => console.log(res)),
+        //map((res) => console.log(res))
+        map((res) => res.headers.get("authorization"))
+      );
   }
 
   login() {

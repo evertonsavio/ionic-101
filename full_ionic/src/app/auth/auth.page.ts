@@ -22,7 +22,7 @@ export class AuthPage implements OnInit {
 
   ngOnInit() {}
 
-  onLogin() {
+  authenticate() {
     this.isLoading = true;
     this.authService.login();
     this.loadingCtrl
@@ -52,10 +52,13 @@ export class AuthPage implements OnInit {
 
     if (this.isLogin) {
       // Send a request to login servers
+      this.authService.signIn(email, password).subscribe((resData) => {
+        console.log(resData);
+      });
     } else {
       this.authService.signUp(email, password).subscribe((resData) => {
         console.log(resData);
-        this.isLogin = true;
+        //this.isLogin = true;
       });
     }
   }
