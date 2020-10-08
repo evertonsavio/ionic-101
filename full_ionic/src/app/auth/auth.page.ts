@@ -4,6 +4,7 @@ import { NgForm } from "@angular/forms";
 import { AlertController, LoadingController } from "@ionic/angular";
 
 import { AuthService } from "./auth.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-auth",
@@ -30,7 +31,6 @@ export class AuthPage implements OnInit {
       .create({ keyboardClose: true, message: "Logging in..." })
       .then((loadingEl) => {
         loadingEl.present();
-
         if (this.isLogin) {
           // Send a request to login servers
           this.authService.signIn(email, password).subscribe(
