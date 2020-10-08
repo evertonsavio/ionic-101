@@ -50,7 +50,7 @@ export class AuthPage implements OnInit {
             (resData) => {
               this.isLoading = false;
               loadingEl.dismiss();
-              console.log(resData);
+              //console.log(resData);
               //this.isLogin = true;
             },
             (errResponse) => {
