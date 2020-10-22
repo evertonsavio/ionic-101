@@ -60,7 +60,7 @@ export class AuthPage implements OnInit {
             }
           );
         }
-        //this.router.navigateByUrl("/places/discover");
+        this.router.navigateByUrl("/places/discover");
       });
   }
 

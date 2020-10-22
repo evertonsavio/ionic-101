@@ -30,7 +30,7 @@ export class BookingsService {
   fetchingBooks() {
     return this.http
       .get<{ [key: string]: BookingData }>(
-        `https://ionic-angular-d3bdc.firebaseio.com/bookings.json?orderBy="userId"&equalTo="${this.authService.userId}"`
+        `https://ionic-project-c7c95.firebaseio.com/bookings.json?orderBy="userId"&equalTo="${this.authService.userId}"`
       )
       .pipe(
         map((bookingData) => {
@@ -86,10 +86,10 @@ export class BookingsService {
     );
     return this.http
       .post<{ name: string }>(
-        `https://ionic-angular-d3bdc.firebaseio.com/bookings.json`,
+        `https://ionic-project-c7c95.firebaseio.com/bookings.json`,
         {
           ...newBooking,
-          id: null,
+          id: "1", //id: null,
         }
       )
       .pipe(
@@ -106,7 +106,7 @@ export class BookingsService {
   cancelBooking(bookingId: string) {
     return this.http
       .delete(
-        `https://ionic-angular-d3bdc.firebaseio.com/bookings/${bookingId}.json`
+        `https://ionic-project-c7c95.firebaseio.com/bookings/${bookingId}.json`
       )
       .pipe(
         switchMap(() => {

@@ -30,7 +30,7 @@ export class PlacesService {
   getPlace(_id: string) {
     return this.http
       .get<PlaceData>(
-        `https://ionic-angular-d3bdc.firebaseio.com/offered-places/${_id}.json`
+        `https://ionic-project-c7c95.firebaseio.com/offered-places/${_id}.json`
       )
       .pipe(
         map((placeData) => {
@@ -51,7 +51,7 @@ export class PlacesService {
   fetchPlaces() {
     return this.http
       .get<{ [key: string]: PlaceData }>(
-        "https://ionic-angular-d3bdc.firebaseio.com/offered-places.json"
+        "https://ionic-project-c7c95.firebaseio.com/offered-places.json"
       )
       .pipe(
         map((resData) => {
@@ -100,7 +100,7 @@ export class PlacesService {
     );
     return this.http
       .post<{ name: string }>(
-        "https://ionic-angular-d3bdc.firebaseio.com/offered-places.json",
+        "https://ionic-project-c7c95.firebaseio.com//offered-places.json",
         {
           ...newPlace,
           id: null,
@@ -145,7 +145,7 @@ export class PlacesService {
           oldPlace.userId
         );
         return this.http.put(
-          `https://ionic-angular-d3bdc.firebaseio.com/offered-places/${placeId}.json`,
+          `https://ionic-project-c7c95.firebaseio.com/offered-places/${placeId}.json`,
           { ...updatedPlaces[updatedPlaceIndex], id: null }
         );
       }),

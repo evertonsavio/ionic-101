@@ -15,7 +15,7 @@ export interface SignUpData {
 })
 export class AuthService {
   private _user = new BehaviorSubject<User>(null);
-  private _userId = null;
+  private _userId = "1";
 
   constructor(private http: HttpClient) {}
 
@@ -70,7 +70,7 @@ export class AuthService {
       }),
     }; */
     return this.http.post<SignUpData>(
-      `http://172.16.106.14:8001/users/signup`,
+      `http://localhost:8011/users-ws/users/signup`,
       {
         email: email,
         password: password,
@@ -87,7 +87,7 @@ export class AuthService {
     }; */
     return this.http
       .post(
-        `http://172.16.106.14:8001/users/signin`,
+        `http://localhost:8011/users-ws/users/signin`,
         {
           email: email,
           password: password,
