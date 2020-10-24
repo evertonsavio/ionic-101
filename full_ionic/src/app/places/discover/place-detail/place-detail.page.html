@@ -16,6 +16,16 @@
       <p>{{loadedPlace.description}}</p>
     </ion-text>
   </ion-item>
+  <ion-item>
+    <p>{{loadedPlace.location.address}}</p>
+  </ion-item>
+  <ion-item>
+    <ion-img
+      role="ion-button"
+      (click)="onShowFullMap()"
+      [src]="loadedPlace.location.staticMapImageUrl"
+    ></ion-img>
+  </ion-item>
 
   <ion-button
     *ngIf="isBook"

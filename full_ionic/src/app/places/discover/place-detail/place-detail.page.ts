@@ -10,6 +10,7 @@ import {
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/auth/auth.service";
 import { BookingsService } from "src/app/bookings/bookings.service";
+import { MapModalComponent } from "src/app/shared/map-modal/map-modal.component";
 import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
 import { Place } from "../../place.model";
 import { PlacesService } from "../../places.service";
@@ -39,6 +40,25 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
 
   get isBook() {
     return this.isBookable;
+  }
+
+  onShowFullMap() {
+    this.modalCtrl
+      .create({
+        component: MapModalComponent,
+        componentProps: {
+          center: {
+            lat: this.loadedPlace.location.lat,
+            lng: this.loadedPlace.location.lng,
+          },
+          selectable: false,
+          closeButtonText: "Close",
+          title: this.loadedPlace.location.address,
+        },
+      })
+      .then((modalEl) => {
+        modalEl.present();
+      });
   }
 
   presentToast() {
