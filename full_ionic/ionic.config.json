@@ -1,5 +1,7 @@
 {
   "name": "full_ionic",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
