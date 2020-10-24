@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  googleMapsApiKey: "",
+  googleMapsApiKey: "AIzaSyDq3nyKDHAgX4YPm9bsYEu6slRKQXW892I",
   serverURL: "http://172.16.106.14:8001",
   allowedDomains: ["localhost:8100"],
 };
